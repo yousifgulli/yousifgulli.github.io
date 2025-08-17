@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Restaurant Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+
+  background: linear-gradient(to bottom, #941111, #350707);
+  color: #333;
+  text-align: center;
+  min-height: 100vh;
+}
+
+    /* Language Selector */
+    .language-selector {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      z-index: 100;
+    }
+    .language-selector button {
+      margin: 0 4px;
+      padding: 6px 12px;
+      border: none;
+      background: #350707;
+      color: #ffffff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+ 
+
+    /* Home Page Layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+ .box {
+  width: 280px;              /* desktop size */
+  height: 280px;             /* desktop size */
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;  /* text at bottom */
+  align-items: center;
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+
+/* Home page boxes - fade in */
+.box img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: fadeInImg 1.8s forwards; /* only for home boxes */
+}
+
+/* Page items - slide in on scroll */
+.food-page .item img,
+.sweets-page .item img,
+.drinks-page .item img {
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 1.2s ease;
+}
+
+.food-page .item img.active,
+.sweets-page .item img.active,
+.drinks-page .item img.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.box span {
+  position: relative;        /* above image */
+  z-index: 2;
+  background: rgba(0,0,0,0.5);  /* semi-transparent background for readability */
+  padding: 3px 100%;
+}
+
+@keyframes fadeInImg {
+  to { opacity: 1; }
+}
+
+   @keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px); /* start off to the right */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);     /* end in normal position */
+  }
+}
+
+.food-page .item img,
+.sweets-page .item img,
+.drinks-page .item img {
+  opacity: 0;
+  transform: translateX(300px);
+  transition: all 2.0s ease;
+}
+
+.food-page .item img.active,
+.sweets-page .item img.active,
+.drinks-page .item img.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+    .food { background-image: url('images/food-bg.jpg'); }
+    .sweets { background-image: url('images/sweets-bg.jpg'); }
+    .drinks { background-image: url('images/drinks-bg.jpg'); }
+
+    /* Pages */
+    .page {
+      display: none;
+      padding: 60px 20px;
+      animation: fadeInPage 0.6s ease;
+    }
+    .page.active { display: block; }
+    @keyframes fadeInPage {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 { font-size: 36px; margin-bottom: 20px; }
+    .food-page h1 { color: #ffffff; }
+    .sweets-page h1 { color: #ffffff; }
+    .drinks-page h1 { color: #ffffff; }
+
+.menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.item:hover { transform: translateY(-6px); }
+
+.item-content {
+  text-align: left;
+  flex: 1;
+  margin-right: 20px; /* space between text and image */
+}
+
+.item img {
+  width: 180px; /* adjust size */
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 1.2s ease;
+}
+
+.item img.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+.item-content {
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  flex: 1;
+}
+
+.item-content h3 { margin: 0 0 6px; font-size: 20px; color: #333; }
+.item-content p { margin: 0 0 8px; font-size: 14px; color: #666; }
+.item-content span { font-weight: bold; color: #e63946; }
+
+    .food-page .item span { color: #941111; }
+    .sweets-page .item span { color: #941111; }
+    .drinks-page .item span { color: #941111; }
+
+    /* Back Button */
+    .back-btn {
+      position: fixed;
+      top: 15px;
+      left: 20px;
+      background: #350707;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      z-index: 200;
+      display: none;
+    }
+    .back-btn.show { display: inline-block; }
+
+@media (max-width: 600px) {
+  .box {
+    width: 90%;             /* shrink to 90% of screen */
+    height: 200px;          /* smaller height */
+  }
+  .box img { width: 100%; height: 100%; }
+  .box span { font-size: 18px; }
+}
+
+.home-icon {
+  position: fixed;
+  top: 15px;
+  left: 20px;
+  z-index: 150; /* above other elements */
+}
+
+.home-icon img {
+  width: 110px;
+  height: 110px;
+  cursor: pointer;
+}
+
+.fixed-footer {
+  position: fixed;      /* stays in place */
+  bottom: 0;            /* stick to bottom of viewport */
+  left: 0;
+  width: 100%;          /* full width */
+  background: rgba(0,0,0,0.8);  /* semi-transparent */
+  color: white;
+  text-align: center;
+  padding: 5px ;
+  font-size: 11px;
+  font-family: cursive;
+  z-index: 500;         /* above all content */
+}
+
+
+  </style>
+</head>
+<body>
+
+
+<!-- Top-left PC Icon (Home only) -->
+<div id="homeIcon" class="home-icon">
+  <img src="C:\Users\NIPEAL\Desktop\DiManzzo\dm.png" alt="PC Icon">
+</div>
+
+
+
+
+  <!-- Language -->
+  <div class="language-selector">
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('ar')">AR</button>
+    <button onclick="setLang('ku')">KU</button>
+  </div>
+
+  <!-- Back -->
+  <a href="#" id="backBtn" class="back-btn" onclick="goHome()">⬅ Back</a>
+
+  <!-- Home -->
+  <div id="home" class="container">
+    <a href="#" class="box food" onclick="showPage('foodPage')">
+      <img src="https://c4.wallpaperflare.com/wallpaper/946/274/339/food-burgers-fast-food-fries-wallpaper-preview.jpg" alt="Food">
+      <span data-key="food">Food</span>
+    </a>
+    <a href="#" class="box sweets" onclick="showPage('sweetsPage')">
+      <img src="https://t4.ftcdn.net/jpg/00/62/27/07/360_F_62270716_ucUJIFkbJIfWeHAK12ig6EPJQqHmiwYT.jpg" alt="Sweets">
+      <span data-key="sweets">Sweets</span>
+    </a>
+    <a href="#" class="box drinks" onclick="showPage('drinksPage')">
+      <img src="https://t3.ftcdn.net/jpg/00/63/69/34/360_F_63693451_FqcX8i5tb6MpmP5y8hurVx63oH11irQo.jpg" alt="Drinks">
+      <span data-key="drinks">Drinks</span>
+    </a>
+  </div>
+
+<!-- Food Page -->
+<div id="foodPage" class="page food-page">
+  <h1 data-key="foodTitle">Foods</h1>
+  <div class="menu-grid">
+
+    <div class="item">
+      <div class="item-content">
+        <h3>Beef Burger</h3>
+        <p>Fresh grilled beef burger</p>
+        <span>10,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-burger-with-floating-ingredient-png-image_15881303.png" alt="Beef Burger">
+    </div>
+
+    <div class="item">
+      <div class="item-content">
+        <h3>Smoked Burger</h3>
+        <p>Smoky grilled beef burger</p>
+        <span>9,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-burger-with-floating-ingredient-png-image_15881303.png" alt="Smoked Burger">
+    </div>
+
+    <div class="item">
+      <div class="item-content">
+        <h3>Chicken Burger</h3>
+        <p>Grilled chicken burger</p>
+        <span>8,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-burger-with-floating-ingredient-png-image_15881303.png" alt="Chicken Burger">
+    </div>
+<div class="item">
+      <div class="item-content">
+        <h3>Mushroom Burger</h3>
+        <p>Grilled Mushroom burger</p>
+        <span>12,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-burger-with-floating-ingredient-png-image_15881303.png" alt="Chicken Burger">
+    </div>
+	<div class="item">
+      <div class="item-content">
+        <h3>Big Burger</h3>
+        <p>Grilled big burger</p>
+        <span>15,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-clipart/20240830/original/pngtree-burger-with-floating-ingredient-png-image_15881303.png" alt="Chicken Burger">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>Crispy Chicken</h3>
+        <p>Crispy fried chicken</p>
+        <span>9,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-vector/20250321/ourmid/pngtree-delicious-fast-food-chicken-tenders-art-illustration-png-image_15833244.png" alt="Chicken Burger">
+    </div>
+  <div class="item">
+      <div class="item-content">
+        <h3>Crispy Chicken BBQ</h3>
+        <p>Crispy fried chicken</p>
+        <span>11,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-vector/20250321/ourmid/pngtree-delicious-fast-food-chicken-tenders-art-illustration-png-image_15833244.png" alt="Chicken Burger">
+    </div>
+
+<div class="item">
+      <div class="item-content">
+        <h3>Hot Wings</h3>
+        <p>Buffalo chicken wings</p>
+        <span>8,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/044/757/362/non_2x/generated-ai-delicious-cajun-butter-fried-chicken-isolated-on-transparent-background-free-png.png" alt="Chicken Burger">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>Chicken Wings</h3>
+        <p>chicken wings</p>
+        <span>7,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/044/757/362/non_2x/generated-ai-delicious-cajun-butter-fried-chicken-isolated-on-transparent-background-free-png.png" alt="Chicken Burger">
+    </div>
+	
+	
+	
+	
+	
+  </div>
+</div>
+
+
+
+
+
+  <!-- Sweets Page -->
+<div id="sweetsPage" class="page sweets-page">
+  <h1 data-key="sweetsTitle">Sweets</h1>
+  <div class="menu-grid">
+
+
+
+
+
+
+    <div class="item">
+      <div class="item-content">
+        <h3>Crepe Nutella</h3>
+        <p>Nutella Crepe</p>
+        <span>5,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/042/901/611/non_2x/stack-of-crepe-with-chocolate-drizzle-png.png" alt="Cake">
+    </div>
+
+     <div class="item">
+      <div class="item-content">
+        <h3>Crepe Kinder</h3>
+        <p>Kinder Crepe</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/042/901/611/non_2x/stack-of-crepe-with-chocolate-drizzle-png.png" alt="Cake">
+    </div>
+	
+	 <div class="item">
+      <div class="item-content">
+        <h3>Crepe Oreo</h3>
+        <p>Oreo Crepe</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/042/901/611/non_2x/stack-of-crepe-with-chocolate-drizzle-png.png" alt="Cake">
+    </div>
+	
+	 <div class="item">
+      <div class="item-content">
+        <h3>Crepe Lotus</h3>
+        <p>Lotus Crepe</p>
+        <span>7,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/042/901/611/non_2x/stack-of-crepe-with-chocolate-drizzle-png.png" alt="Cake">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>Waffle Nutella</h3>
+        <p>Nutella Waffle</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/044/813/649/non_2x/chocolate-waffle-isolated-on-transparent-background-png.png" alt="Cake">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>Waffle Kinder</h3>
+        <p>Kinder Waffle</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/044/813/649/non_2x/chocolate-waffle-isolated-on-transparent-background-png.png" alt="Cake">
+    </div>
+
+<div class="item">
+      <div class="item-content">
+        <h3>Waffle Oreo</h3>
+        <p>Oreo Waffle</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/044/813/649/non_2x/chocolate-waffle-isolated-on-transparent-background-png.png" alt="Cake">
+    </div>
+    
+<div class="item">
+      <div class="item-content">
+        <h3>Waffle Lotus</h3>
+        <p>Lotus Waffle</p>
+        <span>7,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/044/813/649/non_2x/chocolate-waffle-isolated-on-transparent-background-png.png" alt="Cake">
+    </div>
+
+<div class="item">
+      <div class="item-content">
+        <h3>Ice Cream</h3>
+        <p>Fresh Ice Creame</p>
+        <span>7,000 IQ</span>
+      </div>
+      <img src="https://purepng.com/public/uploads/large/purepng.com-ice-creamice-creamcreamfrozensweet-1411527616051ymbwu.png" alt="Cake">
+    </div>
+	<div class="item">
+      <div class="item-content">
+        <h3>Dark Ice Cream</h3>
+        <p>Dark Ice Creame</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://purepng.com/public/uploads/large/purepng.com-ice-creamice-creamcreamfrozensweet-1411527616051ymbwu.png" alt="Cake">
+    </div>
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  <!-- Drinks Page -->
+<div id="drinksPage" class="page drinks-page">
+  <h1 data-key="drinksTitle">Drinks</h1>
+  <div class="menu-grid">
+
+
+
+
+    <div class="item">
+      <div class="item-content">
+        <h3>Tea</h3>
+        <p>Black tea</p>
+        <span>1,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-vector/20250123/ourmid/pngtree-steaming-tea-in-a-transparent-glass-mug-with-subtle-reflections-png-image_15314690.png" alt="Coffee">
+    </div>
+
+ <div class="item">
+      <div class="item-content">
+        <h3>Green Tea</h3>
+        <p>Healthy tea</p>
+        <span>2,000 IQ</span>
+      </div>
+      <img src="https://www.pngplay.com/wp-content/uploads/7/Green-Tea-Cup-PNG-HD-Quality.png" alt="Coffee">
+    </div>
+	
+	 <div class="item">
+      <div class="item-content">
+        <h3>Coffee </h3>
+        <p>Hot Coffee</p>
+        <span>4,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/041/643/200/small_2x/ai-generated-a-cup-of-coffee-and-a-piece-of-coffee-bean-perfect-for-food-and-beverage-related-designs-or-promoting-cozy-moments-png.png" alt="Coffee">
+    </div>
+  
+   <div class="item">
+      <div class="item-content">
+        <h3>Latte</h3>
+        <p>Espresso and Steamed Milk</p>
+        <span>5,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/023/742/327/small_2x/latte-coffee-isolated-illustration-ai-generative-free-png.png" alt="Coffee">
+    </div>
+  
+  
+   <div class="item">
+      <div class="item-content">
+        <h3>Macchiato</h3>
+        <p>Espresso and Milk</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/previews/036/161/020/non_2x/ai-generated-cups-of-hot-macchiato-coffee-on-transparent-background-free-png.png" alt="Coffee">
+    </div>
+  
+  <div class="item">
+      <div class="item-content">
+        <h3>Cappuccino</h3>
+        <p>Espresso and Steamed Milk</p>
+        <span>4,000 IQ</span>
+      </div>
+      <img src="https://file.aiquickdraw.com/imgcompressed/img/compressed_3d56b300a73c2faf8488d8fc6babc4ee.webp" alt="Coffee">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>American Coffee</h3>
+        <p>Espresso</p>
+        <span>5,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-vector/20240821/ourmid/pngtree-top-americano-coffee-png-image_13268228.png" alt="Coffee">
+    </div>
+  
+  	<div class="item">
+      <div class="item-content">
+        <h3>Ice American</h3>
+        <p>Espresso</p>
+        <span>5,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/043/345/181/small/soda-refreshment-on-transparent-background-png.png" alt="Coffee">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>Mocha</h3>
+        <p>Espresso and Steamed Milk</p>
+        <span>6,000 IQ</span>
+      </div>
+      <img src="https://www.starbucksathome.com/ca/sites/default/files/styles/rdp_banner_image/public/2021-05/10032021_CafeMocha_CS-min.png?itok=eUNrd5Z2" alt="Coffee">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>Strawberry Mojito</h3>
+        <p>Strawberry and Mint </p>
+        <span>4,000 IQ</span>
+      </div>
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/027/291/745/small_2x/strawberry-mojito-cocktail-with-mint-leaves-and-lime-slices-free-png.png" alt="Coffee">
+    </div>
+	
+	<div class="item">
+      <div class="item-content">
+        <h3>Blue Mojito</h3>
+        <p>Lemon and Mint </p>
+        <span>4,000 IQ</span>
+      </div>
+      <img src="https://png.pngtree.com/png-vector/20250518/ourmid/pngtree-bright-blue-cocktail-garnished-with-fresh-mint-leaves-ice-cubes-and-png-image_16308761.png" alt="Coffee">
+    </div>
+	
+	
+
+  </div>
+</div>
+
+
+  <script>
+function showPage(pageId) {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("homeIcon").style.display = "none"; 
+  document.getElementById("backBtn").classList.add("show");
+  
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  const page = document.getElementById(pageId);
+  page.classList.add("active");
+  window.scrollTo(0,0);
+
+  const items = page.querySelectorAll(".item img");
+  items.forEach(item => item.classList.remove("active"));
+
+  function animateOnScroll() {
+    items.forEach((item, index) => {
+      const rect = item.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      if (rect.top < windowHeight - 50 && !item.classList.contains("active")) {
+        setTimeout(() => {
+          item.classList.add("active");
+        }, index * 220); // delay each image by 150ms multiplied by its index
+      }
+    });
+  }
+
+  animateOnScroll();
+  window.addEventListener("scroll", animateOnScroll);
+}
+
+
+function goHome() {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("home").style.display = "flex";
+  document.getElementById("homeIcon").style.display = "block"; // show icon
+  document.getElementById("backBtn").classList.remove("show");
+  window.scrollTo(0,0);
+}
+
+    // Translations
+    const translations = {
+      en: {
+        food: "Food", sweets: "Sweets", drinks: "Drinks",
+        foodTitle: "Foods",
+        burger: "Burger", burgerDesc: "Fresh grilled beef burger",
+        pizza: "Pizza", pizzaDesc: "Cheesy Italian pizza",
+        sweetsTitle: "Sweets",
+        cake: "Cake", cakeDesc: "Chocolate layered cake",
+        drinksTitle: "Drinks",
+        coffee: "Coffee", coffeeDesc: "Freshly brewed hot coffee"
+      },
+      ar: {
+        food: "طعام", sweets: "حلويات", drinks: "مشروبات",
+        foodTitle: "طعامنا اللذيذة",
+        burger: "برجر", burgerDesc: "برجر لحم مشوي طازج",
+        pizza: "بيتزا", pizzaDesc: "بيتزا إيطالية بالجبن",
+        sweetsTitle: " الحلويات",
+        cake: "كعكة", cakeDesc: "كعكة شوكولاتة بطبقات",
+        drinksTitle: "مشروبات ",
+        coffee: "قهوة", coffeeDesc: "قهوة طازجة ساخنة"
+      },
+      ku: {
+        food: "خوارن", sweets: "شیرینی", drinks: "ڤەخوارن",
+        foodTitle: "خوارن",
+        burger: "بەرگەر", burgerDesc: "بەرگەر گوشتێکی تازە",
+        pizza: "پیتزا", pizzaDesc: "پیتزای ئیتالی خانەوە",
+        sweetsTitle: "شیرینی",
+        cake: "کێک", cakeDesc: "کێکی چۆکۆڵاتە لە قۆڵ",
+        drinksTitle: "ڤەخوارن",
+        coffee: "قاوە", coffeeDesc: "قاوەی تازەوە گرموورە"
+      }
+    };
+    function setLang(lang) {
+      document.querySelectorAll("[data-key]").forEach(el => {
+        const key = el.getAttribute("data-key");
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+
+  </script>
+
+
+
+
+<!-- Fixed Footer -->
+<footer class="fixed-footer">
+  <p>Developed by Dev.krd</p>
+</footer>
+
+
+
+</body>
+</html>
